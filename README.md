@@ -1,3 +1,4 @@
+GIT优秀资源：[jiaopeng.lc](https://github.com/JohnoString/Docs/blob/master/github%20%E4%BC%98%E7%A7%80%E8%B5%84%E6%BA%90.txt)
 # 欢迎使用马克飞象
 
 @(示例笔记本)[马克飞象|帮助|Markdown]
