@@ -1,25 +1,20 @@
-·¢¼şÈË:	Wei Jiang (½­Î¨)
-·¢ËÍÊ±¼ä:	2019Äê8ÔÂ30ÈÕĞÇÆÚÎå 15:55
-ÊÕ¼şÈË:	Jean Jiang (½­ÎÄÌÎ); Dylan Zhou (ÖÜÀÚ); Longbay Zhang(ÕÅÓÀÅà); 
-Lei Wu (ÎâÀÚ); Jianing Yu (ÓÚ¼ÑÄş); John Jiao (½¹Åô); Van Zhang 
-(ÕÅ·²)-ÔÆÊı¾İÖĞĞÄ¼¯ÍÅ
-Ö÷Ìâ:	github ÓÅĞã×ÊÔ´
-Ç©ÃûÕß:	jiangweilc@inspur.com
+ä¸»é¢˜:	github ä¼˜ç§€èµ„æº
+ç­¾åè€…:	jiangweilc@inspur.com
 
-## 1. ÏµÍ³
+## 1. ç³»ç»Ÿ
 
 [Linux-Tutorial](https://github.com/judasn/Linux-Tutorial)
 
-## 2. ·Ö²¼Ê½
+## 2. åˆ†å¸ƒå¼
 
-[·Ö»¥ÁªÍø Java ¹¤³ÌÊ¦½ø½×ÖªÊ¶ÍêÈ«É¨Ã¤²¼Ê½](https://doocs.github.io/advanced-java)
+[åˆ†äº’è”ç½‘ Java å·¥ç¨‹å¸ˆè¿›é˜¶çŸ¥è¯†å®Œå…¨æ‰«ç›²å¸ƒå¼](https://doocs.github.io/advanced-java)
 
 ## 3. java
-[Java ºËĞÄÖªÊ¶ÕûÀí](https://snailclimb.gitee.io/javaguide/)
-[Éè¼ÆÄ£Ê½](https://java-design-patterns.com/patterns/)
+[Java æ ¸å¿ƒçŸ¥è¯†æ•´ç†](https://snailclimb.gitee.io/javaguide/)
+[è®¾è®¡æ¨¡å¼](https://java-design-patterns.com/patterns/)
 
-## Ô´´úÂë
-[Éè¼ÆÄ£Ê½Ô´´úÂë](https://github.com/iluwatar/java-design-patterns/)
+## æºä»£ç 
+[è®¾è®¡æ¨¡å¼æºä»£ç ](https://github.com/iluwatar/java-design-patterns/)
 
-## 3. ÓÅĞãÈí¼ş
+## 3. ä¼˜ç§€è½¯ä»¶
 [arthas]( https://alibaba.github.io/arthas/advanced-use.html)
