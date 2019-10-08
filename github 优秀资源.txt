@@ -1,4 +1,4 @@
-主题:	github 优秀资源
+﻿主题:	github 优秀资源
 签名者:	jiangweilc@inspur.com
 
 ## 1. 系统
@@ -18,3 +18,6 @@
 
 ## 3. 优秀软件
 [arthas]( https://alibaba.github.io/arthas/advanced-use.html)
+
+## git操作指南
+[git操作指南]http://www.git-scm.com.cn/1544.html
