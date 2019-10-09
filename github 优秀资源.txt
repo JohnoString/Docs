@@ -21,3 +21,6 @@
 
 ## git操作指南
 [git操作指南]http://www.git-scm.com.cn/1544.html
+
+## 免费书籍
+[免费书籍]https://github.com/ruanyf/free-books
