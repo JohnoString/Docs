@@ -1,0 +1,18 @@
+1. java基础、jvm、数据结构、设计模式
+2. IO(netty、akka)、多线程、并发、性能调优、网络、开源框架(Spring Boot/Spring MVC/Spring Cloud)
+3. 数据库(nginx、Redis、mongodb、NoSql)
+4. 分布式、缓存、消息队列、RPC内部机制 
+5. Linux处理高并发网络模型(epoll)、Docker
+____________________________________________________________
+集合 HashMap 的原理，与 Hashtable、ConcurrentHashMap 的区别？
+Java 线程池的核心属性以及处理流程
+Java 并发包原理、Synchronized关键字、锁
+线程的生命周期
+JVM类加载机制
+JVM内存模型
+JVM分代以及垃圾回收机制
+Spring Bean 容器生命周期
+Spring AOP 原理
+Dubbo 请求流程以及原理
+数据库 SQL 优化、数据库索引、索引原理
+————————————————-——————————————————————————————————————————
