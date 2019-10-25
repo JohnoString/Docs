@@ -33,3 +33,6 @@
 
 ## Java
 [Java](https://www.runoob.com/java/)
+
+## 华为云
+[华为云]https://support.huaweicloud.com/usermanual-vpc/zh-cn_topic_0052003963.html
