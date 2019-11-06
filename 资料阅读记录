@@ -19,18 +19,14 @@ ZeroC Ice权威指南.pdf P29
 maven权威指南.pdf P66 P102 P129 
 Ice-1.3.0_cn.pdf P13 P32
 云数据中心网络与SDN P41 P82 P100 P118 P245 P261
-GIT官方书籍 P1.1 P1.4 P2.2 P2.4 P2.6 P3.1 P3.4 P3.7 P4.2 P5.1 P5.2 P6.1 P6.2 P6.4ks P7.1ks
-深入理解OpenStack Neutron P12 P21 P45 P52 P62 P68 P76 P90 P98 P107
-高性能mysql P
-Effective C++ P
+GIT官方书籍 P1.1 P1.4 P2.2 P2.4 P2.6 P3.1 P3.4 P3.7 P4.2 P5.1 P5.2 P6.1 P6.2 P6.4ks P7.1ks P7.10ks P7.11ks 基础看完，暂停
+深入理解OpenStack Neutron P12 P21 P45 P52 P62 P68 P76 P90 P98 P107 P113 P123 P144
+高性能mysql P40 P53 P72
 深入理解JVM虚拟机 P
-数据结构与算法分析 P
-算法导论 P
-剑指 P
-
 
 低：
 重构_改善既有代码的设计 P41
 程序员的职业素养 P39 P53
 大道至简 P27 P49
 从小工到专家 P38
+Effective C++ P
