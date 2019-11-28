@@ -36,3 +36,9 @@
 
 ## 华为云
 [华为云]https://support.huaweicloud.com/usermanual-vpc/zh-cn_topic_0052003963.html
+
+##
+[node.js]http://nodejs.cn/api/http.html
+
+##
+[VUE.js]http://doc.vue-js.com/
