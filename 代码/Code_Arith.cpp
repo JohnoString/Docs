@@ -604,7 +604,6 @@ int main()
 using namespace std;
 
 // 冒泡排序 - 依次比较相邻两元素，若前一元素大于后一元素则交换之，直至最后一个元素即为最大；然后重新从首元素开始重复同样的操作，直至倒数第二个元素即为次大元素；依次类推。如同水中的气泡，依次将最大或最小元素气泡浮出水面。
-
 void BabbleSort(int *arr, const int len)
 {
 	if (len <= 0)
@@ -665,7 +664,6 @@ void SelectSort(int *arr, const int &n)
 
 
 // 简单插入排序 - 用后面所有元素跟已排好的数据从后往前依次比较，大的后移，直到遇到小的则插入之前的位置，依次类推。
-
 void InsertSort(int *arr, const int len)
 {
 	for (int i = 1; i < len; ++i)
@@ -685,11 +683,43 @@ void InsertSort(int *arr, const int len)
 
 
 // 快排
+int Partitions(int a[], int low, int high)
+{
+	if (low >= high)     //先检查左右条件
+		return -1;
+	int i = low, j = high, x = a[low];
+	while (i < j)
+	{
+		while (i < j && a[j] >= x)//从右向左找到第一个小于x的
+			j--;
+		if (i < j)
+			a[i++] = a[j];//填坑之后i++
+		while (i < j && a[i] <= x)//从左向右找第一个大于x的数
+			i++;
+		if (i < j)
+			a[j--] = a[i];
+	}
+	a[i] = x;     //把最开始取出来的x放到i处
+	return i;
+}
+void QuickSort(int a[], int low, int high)
+{
+
+	if (low < high)
+	{
+		int q = Partitions(a, low, high);
+		QuickSort(a, low, q - 1);
+		QuickSort(a, q + 1, high);
+	}
+}
+
+// 堆排
 
 int main()
 {
 	int arr[10] = { 10, 4, 56, 76, 34, 23, 78, 0, -1, 43 };
-	SelectSort(arr, sizeof(arr) / sizeof(int));
+	//SelectSort(arr, sizeof(arr) / sizeof(int));
+	QuickSort(arr, 0, 9);
 	Print(arr, sizeof(arr) / sizeof(int));
 	return 0;
 }
@@ -698,6 +728,29 @@ int main()
 // 树
 #if 0
 #include <iostream>
+#include "BinaryTree.h"
+using namespace std;
+
+int main()
+{
+	BinaryTree tree;
+	cout << "按前序遍历方式创建树" << endl;
+	//"ABDG##H###CE#I##F##";
+	tree.Create();
+	cout << "树的高度为：" << tree.getHeight() << endl;
+	cout << "树的节点为：" << tree.getSize() << endl;
+	tree.preOrder();			//前序遍历
+	tree.inOrder();				//中序遍历
+	tree.postOrder();			//后序遍历
+	tree.distroy();				//摧毁树
+	system("pause");
+	return 0;
+}
+#endif
+
+// 图
+#if 0
+#include <iostream>
 using namespace std;
 
 int main()
@@ -706,24 +759,337 @@ int main()
 }
 #endif
 
+// 数据结构——》堆
+#if 0
+#include<iostream>
+#include<algorithm>
+#define maxn 1001   //heap's size
+
+using namespace std;
+
+struct Heap {
+	int size;   // number of elements in array
+	int *array;
+	Heap() {    //init
+		size = 0;
+		array = new int[maxn];
+	}
+	Heap(int n) {   //init
+		size = 0;
+		array = new int[n];
+	}
+	~Heap() {   //free memory
+		delete array;
+	}
+	bool empty() {
+		if(size != 0) return false;
+		return true;
+	}
+	void insert(int value) {
+		array[++size] = value;
+		int index = size;
+		while(index > 1) {
+			if(array[index] > array[index/2]) swap(array[index],array[index/2]);
+			index /= 2;
+		}
+	}
+	void del() 
+	{
+		if(empty()) return;
+		swap(array[1],array[size--]);
+		int index = 1;
+		while(2*index <= size) 
+		{
+			int next = 2*index;
+			if(next < size && array[next+1] > array[next]) next++;
+			if(array[index] < array[next]) 
+			{
+				swap(array[index],array[next]);
+				index = next;
+			} else break;
+		}
+	}
+	int max() {
+		if(empty()) return -1;
+		return array[1];
+	}
+};
+void buildHeap(int array[],int size) {
+	int i,tmp,index;
+	for(i = size/2; i >= 1; i--) {
+		tmp = array[i];
+		index = 2*i;
+		while(index <= size) {
+			if(index < size && array[index+1] > array[index]) index++;
+			if(array[index] < tmp) break;
+			array[index/2]  = array[index];
+			index *= 2;
+		}
+		array[index/2] = tmp;
+	}
+}
+int main() {
+	int n,i,j,k;
+	cout << "input heap's size:";
+	cin >> n;
+	Heap H = Heap(n);
+	int* array = new int[n];
+	for(i = 1; i <= n; i++) {
+		int tmp;
+		cin >> tmp;
+		array[i] = tmp;
+		H.insert(tmp);
+	}
+	buildHeap(array,n);
+	for(i = 1; i <= n; i++) {
+		cout << array[i] << " ";
+	}
+	cout << endl;
+	//while(!H.empty()) {
+	//	cout << H.max() << endl;
+	//	H.del();
+	//}
+	return 0;
+};
+#endif
+
 // *模式匹配算法(KMP)
 #if 0
 #include <iostream>
+#include <string>
 using namespace std;
+
+// 暴力匹配
+int BF(const char *str, const char *substr)   //暴力匹配算法
+{
+	int i = 0, j = 0, k = i;
+	while (i < strlen(str) && j < strlen(substr)) {
+		if (str[i] == substr[j]) {
+			++i;
+			++j;
+		}
+		else {
+			j = 0;
+			i = ++k;//匹配失败，i从主串的下一位置开始，k中记录了上一次的起始位置
+		}
+	}
+	if (j >= strlen(substr)) {
+		return k;
+	}
+	else
+		return -1;
+}
+
+// 计算next数组
+void getNext(const char * p, int * next)
+{
+	next[0] = -1;
+	int i = 0, j = -1;
+
+	while (i < strlen(p) - 1)
+	{
+		if (j == -1 || p[i] == p[j])
+		{
+			++i;
+			++j;
+			next[i] = j;
+		}
+		else
+		{
+			j = next[j];
+		}
+	}
+}
+
+// KMP算法
+int KMP(const char * t, const char * p, int next[])
+{
+	int i = 0;
+	int j = 0;
+
+	while (i < strlen(t) && j < strlen(p))
+	{
+		if (j == -1 || t[i] == p[j])
+		{
+			i++;
+			j++;
+		}
+		else
+		{
+			j = next[j];
+		}
+	}
+
+	if (j == strlen(p))
+		return i - j;
+	else
+		return -1;
+}
 
 int main()
 {
+	string strParent = "abababcaafjasksfajfabcdabhasdjkfhjaskdsdaaabababcabcdabdSFJAFSDASJK";
+	char strSub[] = "abababca";
+	int next[sizeof(strSub) - 1];
+	//getNext(strSub, next);
+	cout << BF(strParent.c_str(), strSub) << endl;
+	//cout << KMP(strParent.c_str(), strSub, next) << endl;
 	return 0;
 }
 #endif
 
 // 哈希
 #if 0
+/*******************************************************************************
+功    能：哈希表——链表法(+/- 1^2,2^2,3^2...)
+创建时间：
+作    者：
+修改时间：
+作    者：
+********************************************************************************/
+
 #include <iostream>
+#include <string>
+#include <vector>
+#include <cmath>
+#include <malloc.h>
 using namespace std;
 
-int main()
+#define MAXTABLESIZE 10000 //允许开辟的最大散列表长度
+#define KEYLENGTH 100      //关键字的最大长度
+
+typedef int ElementType;
+struct LNode
 {
+	ElementType data;
+	LNode *next;
+};
+typedef LNode *PtrToNode;
+typedef PtrToNode LinkList;
+struct TblNode
+{
+	int tablesize;  //表的最大长度
+	LinkList heads; //存放散列单元数据的数组
+};
+typedef struct TblNode *HashTable;
+
+/*返回大于n且不超过MAXTABLESIZE的最小素数*/
+int NextPrime(int n)
+{
+	int p = (n % 2) ? n + 2 : n + 1; //从大于n的下一个奇数开始
+	int i;
+	while (p <= MAXTABLESIZE)
+	{
+		for (i = (int)sqrt(p); i > 2; i--)
+		{
+			if ((p % i) == 0)
+				break;
+		}
+		if (i == 2)
+			break; //说明是素数，结束
+		else
+			p += 2;
+	}
+	return p;
+}
+
+/*创建新的哈希表*/
+HashTable CreateTable(int table_size)
+{
+	HashTable h = (HashTable)malloc(sizeof(TblNode));
+	h->tablesize = NextPrime(table_size);
+	h->heads = (LinkList)malloc(h->tablesize * sizeof(LNode));
+	//初始化表头结点
+	for (int i = 0; i < h->tablesize; i++)
+	{
+		h->heads[i].next = NULL;
+	}
+	return h;
+}
+
+/*查找数据的初始位置*/
+int Hash(ElementType key, int n)
+{
+	//这里只针对大小写
+	return key % 11;
+}
+
+/*查找元素位置*/
+LinkList Find(HashTable h, ElementType key)
+{
+	int pos;
+
+	pos = Hash(key, h->tablesize); //初始散列位置
+
+	LinkList p = h->heads[pos].next; //从链表的第一个节点开始
+	while (p && key != p->data)
+	{
+		p = p->next;
+	}
+
+	return p;
+}
+
+/*插入新的元素*/
+bool Insert(HashTable h, ElementType key)
+{
+	LinkList p = Find(h, key); //先查找key是否存在
+	if (!p)
+	{
+		//关键词未找到，可以插入
+		LinkList new_cell = (LinkList)malloc(sizeof(LNode));
+		new_cell->data = key;
+		int pos = Hash(key, h->tablesize);
+		new_cell->next = h->heads[pos].next;
+		h->heads[pos].next = new_cell;
+		return true;
+	}
+	else
+	{
+		cout << "键值已存在！" << endl;
+		return false;
+	}
+}
+
+/*销毁链表*/
+void DestroyTable(HashTable h)
+{
+	int i;
+	LinkList p, tmp;
+	//释放每个节点
+	for (i = 0; i < h->tablesize; i++)
+	{
+		p = h->heads[i].next;
+		while (p)
+		{
+			tmp = p->next;
+			free(p);
+			p = tmp;
+		}
+	}
+	free(h->heads);
+	free(h);
+}
+
+int main(int argc, char const *argv[])
+{
+	int a[] = { 47, 7, 29, 29, 11, 16, 92, 22, 8, 3, 50, 37, 89, 94, 21 };
+	int n = 15;
+	HashTable h = CreateTable(n);
+	for (int i = 0; i < n; i++)
+	{
+		Insert(h, a[i]); //插入元素
+	}
+	for (int i = 0; i < h->tablesize; i++)
+	{
+		LinkList p = h->heads[i].next;
+		while (p)
+		{
+			cout << p->data << " "; //打印哈希表元素
+			p = p->next;
+		}
+		cout << endl;
+	}
 	return 0;
 }
 #endif
@@ -734,10 +1100,51 @@ int main()
 using namespace std;
 
 // 循环
+int binSearch(int srcArray[], int key, int len) {
+	int mid;
+	int start = 0;
+	int end = len - 1;
+	while (start <= end) {
+		mid = (end - start) / 2 + start;
+		if (key < srcArray[mid]) {
+			end = mid - 1;
+		}
+		else if (key > srcArray[mid]) {
+			start = mid + 1;
+		}
+		else {
+			return mid;
+		}
+	}
+
+	return -1;
+}
+
 // 递归
+int binSearch_(int srcArray[], int start, int end, int key) {
+	int mid = (end - start) / 2 + start;
+	if (srcArray[mid] == key) {
+		return mid;
+	}
+	if (start >= end) {
+		return -1;
+	}
+	else if (key > srcArray[mid]) {
+		return binSearch_(srcArray, mid + 1, end, key);
+	}
+	else if (key < srcArray[mid]) {
+		return binSearch_(srcArray, start, mid - 1, key);
+	}
+
+	return -1;
+}
 
 int main()
 {
+	int arr[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	cout << binSearch(arr, 7, 10) << endl;
+	cout << binSearch_(arr, 0, 9, 5) << endl;
+
 	return 0;
 }
 #endif
@@ -749,6 +1156,60 @@ using namespace std;
 
 int main()
 {
+	return 0;
+}
+#endif
+
+// 端口合并
+#if 1
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
+using namespace std;
+
+string MergePorts(const vector<string> & vs)
+{
+	if (vs.empty())
+	{
+		return "";
+	}
+
+	
+	// 截取每一行端口
+
+}
+
+// 字符串转整形
+long StringToLong(const string & strPort)
+{
+	long a = 0;
+	stringstream ss;
+	ss << strPort;
+	ss >> a;
+}
+// 整形转字符串
+string LongToString(const int & iPort)
+{
+	string res = "";
+	stringstream ss;         
+	ss << iPort;                      
+	ss >> res;                    
+}
+
+
+int main()
+{
+	int n;
+	cin >> n;               
+	vector<string> vs;
+	getchar();            
+	for (int i = 0; i < n; i++)
+	{
+		getline(cin, vs[i]);  // 暂未验证合法性
+	}
+
+	cout << MergePorts(vs) << endl;
 	return 0;
 }
 #endif
