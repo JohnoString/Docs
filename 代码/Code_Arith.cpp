@@ -1160,13 +1160,111 @@ int main()
 }
 #endif
 
+// MARKDOWN文本 -> HTML标题
+#if 0
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<string> GetHtmlTitle(const vector<string> &v)
+{
+	if (v.empty())
+		return v;
+
+	// 过滤标题, 获取井号个数
+	vector<string> vTmp; // 过滤后的
+	vector<string> vRes; // 结果
+	vector<int> vNum;   //井号个数
+	vector<string> vTitle; // 标题不含空格后
+	vector<string> vtxt;   // 标题空格后内容
+	for (int i = 0; i < v.size(); ++i)
+	{
+		if (v[i].front() == '#' && v[i].find_first_of(' ') != -1)
+		{
+			vTmp.push_back(v[i]);
+			vNum[i] = v[i].find_first_of(' ');
+			vtxt.push_back(v[i].substr(vNum[i]);
+		}
+	}
+
+	// 生成标题头
+	for (int j = 0; j < vTmp.size(); j += 2)
+	{
+		// 井号个数
+		vNum[j] = vTmp[j].find_first_of(' ');
+
+		vTitle.push_back(GetLineTitle(vNum[j], vTitle[j], vNum[j + 1]));
+	}
+
+	// 生成标题
+	for (int a = 0; a < vTmp.size(); ++a)
+	{
+		vRes[a] += vTitle[a];
+		vRes[a] += vtxt[a];
+	}
+
+	return vRes;
+}
+
+
+string GetFirstLineTitle(const int &a)
+{
+	string sT = "1";
+	for (int i = 0; i < a; i++)
+	{
+		sT += ".1";
+	}
+}
+
+string GetLineTitle(const int &a, const string & sa, const int &b)
+{
+	string sb = sa;
+	if (a > b)
+	{
+		int j = a - 1;
+		for (int i = 0 ; i < a - b; i++)
+		{
+			j = j - 2;
+		}
+
+		sb[j] = char(sa[j] + 1);
+	}
+	else if (a == b)
+	{
+		sb[a - 1] = char(sa[a - 1] + 1);
+	}
+	else
+	{
+		for (int i = 0; i < b - a; i++)
+		{
+			sb += ".1";
+		}
+	}
+
+	return sb;
+}
+
+int main()
+{
+	return 0;
+}
+#endif
+
 // 端口合并
-#if 1
+#if 0
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
+#include <list>
+#include <map>
 using namespace std;
+
+typedef struct PortRange
+{
+	long maxPort;
+	long minPort;
+}Ports;
 
 string MergePorts(const vector<string> & vs)
 {
@@ -1174,39 +1272,75 @@ string MergePorts(const vector<string> & vs)
 	{
 		return "";
 	}
-
 	
-	// 截取每一行端口
+	// 截取每一行端口, 逗号后面默认无空格
+	vector<Ports> vPorts; // 存端口范围数组
+	map<int, vector<Ports> > mapPorts; // 存所有行端口范围
+	vector<string> vsPorts; // 存去掉逗号之后的字符串数组
+	int pos = 0;
+	string strTmp = "";
+	bool IsTrue = true;
+	for (int i = 0; i < vs.size(); ++i)
+	{
+		// 解析字符串去掉逗号
+		for (int j = 0; IsTrue; j = pos + 1)
+		{
+			pos = vs[i].find(',', j);
+			if (pos != vs[i].npos)
+			{
+				strTmp = vs[i].substr(j, pos - j);
+				cout << strTmp << endl;
+				// 生成端口范围数组
+				vsPorts.push_back(strTmp);
+			}
+			else
+			{
+				strTmp = vs[i].substr(j);
+				cout << strTmp << endl;
+				// 生成端口范围数组
+				vsPorts.push_back(strTmp);
+				IsTrue = false;
+				break;
+			}
+		}
 
+		// 端口范围压入map待匹配
+		mapPorts[i] = vPorts;
+	}
+
+	return "";
 }
 
-// 字符串转整形
+// 
 long StringToLong(const string & strPort)
 {
 	long a = 0;
 	stringstream ss;
 	ss << strPort;
 	ss >> a;
+	return a;
 }
-// 整形转字符串
+// 
 string LongToString(const int & iPort)
 {
 	string res = "";
 	stringstream ss;         
 	ss << iPort;                      
-	ss >> res;                    
+	ss >> res;  
+	return res;
 }
-
 
 int main()
 {
 	int n;
 	cin >> n;               
 	vector<string> vs;
-	getchar();            
+	getchar();  
+	string strTmp = "";
 	for (int i = 0; i < n; i++)
 	{
-		getline(cin, vs[i]);  // 暂未验证合法性
+		getline(cin, strTmp);  // 暂未验证合法性(默认合法)
+		vs.push_back(strTmp);
 	}
 
 	cout << MergePorts(vs) << endl;
