@@ -48,3 +48,10 @@
 链接：https://github.com/0voice/interview_internal_reference#1
 框架资料：
 链接：https://github.com/yttsam/developkit_set
+
+##
+前端
+Vue源码剖析之整体流程：http://t.kuick.cn/RIJo
+WEB前端开发必学框架-vue：http://t.kuick.cn/RIJX
+Vue组件化开发实战：http://t.kuick.cn/RIHJ
+
