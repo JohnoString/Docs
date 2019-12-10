@@ -1250,8 +1250,13 @@ int main()
 }
 #endif
 
-// 端口合并
-#if 0
+// 端口合并(多行)
+/*思路：
+	1. 将每一行数据解析为(例:将12-23或者23调整为min=12,max=23或者min=23,max=23)格式
+	2. 匹配数据生成目标端口范围链表
+	3. 将端口范围链表转化为对应字符串返回
+*/
+#if 1
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -1260,55 +1265,31 @@ int main()
 #include <map>
 using namespace std;
 
-typedef struct PortRange
+class Ports
 {
+public:
 	long maxPort;
 	long minPort;
-}Ports;
 
-string MergePorts(const vector<string> & vs)
-{
-	if (vs.empty())
+	bool operator <(const Ports& p)
 	{
-		return "";
-	}
-	
-	// 截取每一行端口, 逗号后面默认无空格
-	vector<Ports> vPorts; // 存端口范围数组
-	map<int, vector<Ports> > mapPorts; // 存所有行端口范围
-	vector<string> vsPorts; // 存去掉逗号之后的字符串数组
-	int pos = 0;
-	string strTmp = "";
-	bool IsTrue = true;
-	for (int i = 0; i < vs.size(); ++i)
-	{
-		// 解析字符串去掉逗号
-		for (int j = 0; IsTrue; j = pos + 1)
+		if (p.maxPort < this->minPort)
 		{
-			pos = vs[i].find(',', j);
-			if (pos != vs[i].npos)
-			{
-				strTmp = vs[i].substr(j, pos - j);
-				cout << strTmp << endl;
-				// 生成端口范围数组
-				vsPorts.push_back(strTmp);
-			}
-			else
-			{
-				strTmp = vs[i].substr(j);
-				cout << strTmp << endl;
-				// 生成端口范围数组
-				vsPorts.push_back(strTmp);
-				IsTrue = false;
-				break;
-			}
+			return true;
 		}
-
-		// 端口范围压入map待匹配
-		mapPorts[i] = vPorts;
+		else if (p.minPort > this->maxPort)
+		{
+			return false;
+		}
 	}
+};
 
-	return "";
+// 获取目标字符串
+string GetResultStr(const list<Ports> & lstPorts)
+{
+	// 遍历获取每一个节点
+	// 判断并调用LongToString接口获取对应字符串
+	// 将每一个子串拼接起来返回即可
 }
 
 // 
@@ -1324,10 +1305,133 @@ long StringToLong(const string & strPort)
 string LongToString(const int & iPort)
 {
 	string res = "";
-	stringstream ss;         
-	ss << iPort;                      
-	ss >> res;  
+	stringstream ss;
+	ss << iPort;
+	ss >> res;
 	return res;
+}
+
+Ports GetPorts(const string & strSrc)
+{
+	Ports port;
+	if (strSrc.npos == strSrc.find('-'))
+	{
+		port.minPort = StringToLong(strSrc);
+		port.maxPort = StringToLong(strSrc);
+	}
+	else
+	{
+		port.minPort = StringToLong(strSrc.substr(0, strSrc.find('-')));
+		port.maxPort = StringToLong(strSrc.substr(strSrc.find('-') + 1, strSrc.size() - strSrc.find('-') - 1));
+	}
+	return port;
+}
+
+// 测试打印数据
+void Print(list<Ports> lstPorts)
+{
+	list<Ports>::iterator iterB = lstPorts.begin();
+	list<Ports>::iterator iterE = lstPorts.end();
+	for (; iterB != iterE; ++iterB)
+	{
+		cout << "(" << (*iterB).minPort << "," << (*iterB).maxPort << ")" << endl;
+	}
+}
+
+void MergePort(list<Ports> &lstPortsRes, list<Ports> lstPorts)
+{
+	if (lstPortsRes.empty())
+	{
+		lstPortsRes.assign(lstPorts.begin(), lstPorts.end());
+		return;
+	}
+
+	//lstPortsRes.merge(lstPorts);   // 升序
+	list<Ports>::iterator iterBRes = lstPortsRes.begin();
+	list<Ports>::iterator iterERes = lstPortsRes.end();
+	list<Ports>::iterator iterB = lstPorts.begin();
+	list<Ports>::iterator iterE = lstPorts.end();
+
+	// 分情况考虑,共6种 (以带‘-’的为例，不带‘-’更简单)
+	if (iterBRes->minPort >= iterE->maxPort)    // 无交集
+	{
+		// 合并结果举例: iterE 1-5, iterBRes 21-29 ->>> 1-5, 21-29，代码略
+	}
+	else if (iterBRes->maxPort <= iterE->minPort)  // 无交集
+	{
+		// 合并结果举例: iterE 30-33, iterBRes 21-29 ->>> 21-29, 30-33，代码略
+	}
+	else if (iterBRes->maxPort >= iterE->maxPort && iterBRes->minPort <= iterE->minPort) // 包含关系
+	{
+		// 遍历lstPortsRes链表对比插入
+	}
+	else if (iterBRes->maxPort >= iterE->maxPort && iterBRes->minPort >= iterE->minPort) // 交叉
+	{
+		// 遍历lstPortsRes链表对比插入
+	}
+	else if (iterBRes->maxPort <= iterE->maxPort && iterBRes->minPort <= iterE->minPort) // 交叉
+	{
+		// 遍历lstPortsRes链表对比插入
+	}
+	else if (iterBRes->maxPort <= iterE->maxPort && iterBRes->minPort >= iterE->minPort) // 被包含
+	{
+		// 遍历lstPortsRes链表对比插入
+	}
+}
+
+string MergePorts(const vector<string> & vs)
+{
+	if (vs.empty())
+	{
+		return "";
+	}
+	
+	// 截取每一行端口, 逗号后面默认无空格
+	list<Ports> lstPorts; // 存端口范围链表
+	list<Ports> lstPortsTmp; // 存合并后的端口范围链表
+	vector<string> vsPorts; // 存去掉逗号之后的字符串数组
+	int pos = 0;
+	string strTmp = "";
+	bool IsTrue = true;
+	Ports port;
+	for (int i = 0; i < vs.size(); ++i)
+	{
+		// 解析字符串去掉逗号
+		IsTrue = true;
+		for (int j = 0; IsTrue; j = pos + 1)
+		{
+			pos = vs[i].find(',', j);
+			if (pos != vs[i].npos)
+			{
+				strTmp = vs[i].substr(j, pos - j);
+				// 生成端口范围数组
+				// 将12-23或者23调整为min=12,max=23或者min=23,max=23
+				port = GetPorts(strTmp);
+			}
+			else
+			{
+				strTmp = vs[i].substr(j);
+				port = GetPorts(strTmp);
+				// 生成端口范围数组
+				lstPorts.push_back(port);
+				IsTrue = false;
+				break;
+			}
+			lstPorts.push_back(port);
+		}
+
+		// 打印lstPorts验证
+		Print(lstPorts);
+
+		// 循环合并端口
+		MergePort(lstPortsTmp, lstPorts);
+		Print(lstPortsTmp);
+		lstPorts.clear();
+	}
+
+	// 将合并后的端口范围链表归并为字符串返回
+	// 略->非核心
+	return GetResultStr(lstPortsTmp);
 }
 
 int main()
